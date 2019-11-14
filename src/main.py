@@ -1,7 +1,5 @@
-# coding: utf-8
-"""
-Car.gr 
-"""
+#!/usr/bin/env python
+
 import requests
 import bs4
 import re
@@ -66,11 +64,9 @@ class CarGrSearch(object):
     def __iter__(self):
         return self
     
-    @timed
     def __next__(self):
         return self.next()
     
-    @timed 
     def next(self):
         if self._cur_iter_list == []:
             self.current_page_url = self.next_page_url()
@@ -81,28 +77,25 @@ class CarGrSearch(object):
                 raise StopIteration
         return Ad(self._cur_iter_list.pop(0))
     
-    @timed 
     def next_page_url(self):
         next_page = self.current_page.findAll("a",{"class":"next"})
         if len(next_page) == 0:
             return None
         else:
             return self.prefix + next_page[0]["href"]
-    @timed 
     def parse_page(self):
         html = requests.get(self.current_page_url)
         soup = bs4.BeautifulSoup(html.content,"html.parser")
         return soup 
 
-    @timed 
     def get_adds_of_page(self):
         l = self.current_page.findAll("a",{"class":["vehicle","list-group-item","clsfd_list_row"]},href=True)
         return [self.prefix + a_tag["href"] for a_tag in l]
 
 
 if __name__ == "__main__":
-    #search = "https://www.car.gr/classifieds/bikes/?condition=new&condition=used&offer_type=sale"
-    search = input('search: ')
+    search = "https://www.car.gr/classifieds/bikes/?fs=1&condition=used&offer_type=sale&make=22&make=22&model=1534&model=1546&model=3845&registration-from=%3E2014&significant_damage=f&rg=3&modified=2"
+    #search = input('search: ')
     moto_search = CarGrSearch(search)
     for a in moto_search:
         print(a)
