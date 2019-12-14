@@ -12,6 +12,7 @@ class Ad(object):
         html = requests.get(url)
         self.ad_soup = bs4.BeautifulSoup(html.content,"html.parser")
         self._parse()
+        self.url = url 
         
     @timed 
     def _parse(self):
@@ -46,6 +47,7 @@ class Ad(object):
         s += "Title: {:^13}\n".format(self.title)
         s += "Price: {:^13}\n".format(self.price)
         s += "Upload date: {:^13}\n".format(self.upload_date)
+        s += "Url:   {:^13}\n".format(self.url)
         s += "--------------------\n"
         return s
 
