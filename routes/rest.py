@@ -3,6 +3,7 @@ import logging
 import os
 from src.carinder import CarGrSearch 
 
+
 log = logging.getLogger(__name__)
 
 app = Flask(__name__,static_folder="templates",template_folder="templates")
@@ -18,10 +19,10 @@ def find_adds():
 @app.route("/")
 def root():
     results = find_adds()
-    response = ''
+    response = []
     for add in results:
-        response += str(add) + '<br><br>' 
+        response.append(add)
      
-    return response
+    return render_template("add.html",adds = response)
 
 app.run(host="0.0.0.0")
