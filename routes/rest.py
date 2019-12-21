@@ -25,4 +25,4 @@ def root():
      
     return render_template("add.html",adds = response)
 
-app.run()
+app.run(host="0.0.0.0")
