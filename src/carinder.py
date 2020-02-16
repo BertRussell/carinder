@@ -64,27 +64,30 @@ class CarGrSearch(object):
 
     
     def __iter__(self):
-        return self
-    
-    def __next__(self):
-        return self.next()
-    
-    def next(self):
-        if self._cur_iter_list == []:
-            self.current_page_url = self.next_page_url()
-            if self.current_page_url != None :
-                self.current_page = self.parse_page()
-                self._cur_iter_list = self.get_adds_of_page()
-            else:
-                raise StopIteration
-        return Ad(self._cur_iter_list.pop(0))
-    
+        current_page_url = self.current_page_url
+        while current_page_url:
+            html = requests.get(current_page_url)
+            soup = bs4.BeautifulSoup(html.content,"html.parser")
+            page_links = soup.findAll("a",{"class":["vehicle","list-group-item","clsfd_list_row"]},href=True)
+            for link in page_links:
+                yield Ad(self.prefix + link['href'])
+            
+            next_page = soup.findAll("a",{"class":"next"})
+
+            if next_page != [] :
+                current_page_url = self.prefix + next_page[0]["href"]
+            else :
+                current_page_url = None
+
+
+
     def next_page_url(self):
         next_page = self.current_page.findAll("a",{"class":"next"})
         if len(next_page) == 0:
             return None
         else:
             return self.prefix + next_page[0]["href"]
+
     def parse_page(self):
         html = requests.get(self.current_page_url)
         soup = bs4.BeautifulSoup(html.content,"html.parser")
