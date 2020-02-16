@@ -4,7 +4,7 @@ import requests
 import bs4
 import re
 from datetime import datetime, timedelta
-from utils import timed 
+from .utils import timed 
 class Ad(object):
     
     @timed
@@ -56,8 +56,8 @@ class CarGrSearch(object):
     
     def __init__(self,search_url:str):
         self.prefix       = "https://car.gr"
-        self.search       = search
-        self.current_page_url  = search
+        self.search       = search_url
+        self.current_page_url  = search_url
         self.current_page = self.parse_page()
         self._iter_add      = None 
         self._cur_iter_list =  self.get_adds_of_page()
@@ -95,9 +95,9 @@ class CarGrSearch(object):
         return [self.prefix + a_tag["href"] for a_tag in l]
 
 
-if __name__ == "__main__":
-    search = "https://www.car.gr/classifieds/bikes/?fs=1&condition=used&offer_type=sale&make=22&make=22&model=1534&model=1546&model=3845&registration-from=%3E2014&significant_damage=f&rg=3&modified=2"
-    #search = input('search: ')
-    moto_search = CarGrSearch(search)
-    for a in moto_search:
-        print(a)
+#if __name__ == "__main__":
+#    search = "https://www.car.gr/classifieds/bikes/?fs=1&condition=used&offer_type=sale&make=22&make=22&model=1534&model=1546&model=3845&registration-from=%3E2014&significant_damage=f&rg=3&modified=2"
+#    #search = input('search: ')
+#    moto_search = CarGrSearch(search)
+#    for a in moto_search:
+#        print(a)

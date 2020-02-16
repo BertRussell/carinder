@@ -3,4 +3,4 @@ include/*
 lib/*
 share/*
 __pycache__/*
-routes/*
+src/__pycache__/*
