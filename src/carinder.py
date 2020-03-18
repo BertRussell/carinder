@@ -30,8 +30,10 @@ class Ad(object):
             if 'Τελευταία αλλαγή:' == cells[0].contents[0].strip():
                 last_ad_update  = cells[1].contents[0]
                 break
+        print("---------------------")
         print(last_ad_update)
-        time,time_id=last_ad_update.split(" ")
+        print("---------------------")
+        time,time_id, *rest =last_ad_update.split(" ")
         if time_id.strip() == "δευτερόλεπτα":
             return datetime.now() - timedelta(seconds=int(time))
         elif time_id.strip() == "μέρες":
